@@ -1,0 +1,5 @@
+parameter	value
+in_ccle_snp_file	../data/ccle/CCLE_DepMap_18q3_maf_20180718.pkl
+in_ccle_exp_file	../data/ccle/CCLE_DepMap_18q3_RNAseq_RPKM_20180718.pkl
+in_ccle_sample_file	../data/ccle/CCLE_sample_info_file_2012-10-18.pkl
+out_folder	../output/ccle/

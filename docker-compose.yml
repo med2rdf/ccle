@@ -1,0 +1,31 @@
+version: "2"
+services:
+
+  ccle_cnvtr:
+    container_name: ccle_cnvtr
+    build: ./env
+    volumes:
+      - .:/work
+#      - /mnt/fast/lincpj20_lm/mase/converter/data:/work/data        HHD等のマウント用
+#      - /mnt/fast/lincpj20_lm/mase/converter/output:/work/output        HHD等のマウント用  
+    tty: true
+    privileged: true
+    environment:
+      TZ: "Asia/Tokyo"
+      LANG: C.UTF-8
+
+  ccle_viz:
+    container_name: ccle_viz
+    image:  jupyter/scipy-notebook:latest
+    environment:
+      TZ: "Asia/Tokyo"
+      LANG: C.UTF-8
+    volumes:
+      - .:/home/jovyan/work
+#      - /mnt/fast/lincpj20_lm/mase/converter/data:/home/jovyan/work/data   HHD等のマウント用
+    ports:
+      - "8891:8891"
+    restart: unless-stopped
+    tty: true
+    privileged: true
+    command: start.sh jupyter lab --NotebookApp.token=''

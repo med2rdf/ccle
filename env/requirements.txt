@@ -1,0 +1,7 @@
+rdflib
+tqdm
+SPARQLWrapper
+joblib
+scikit-learn
+pandas
+glob2

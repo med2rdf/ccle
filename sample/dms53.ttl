@@ -1,0 +1,81 @@
+@prefix ccle: <https://portals.broadinstitute.org/ccle/> .
+@prefix cclec: <https://portals.broadinstitute.org/links/cell_line/> .
+@prefix ccleg: <https://portals.broadinstitute.org/links/gene/> .
+@prefix cclev: <https://portals.broadinstitute.org/links/variants/> .
+@prefix cellosaurus: <https://web.expasy.org/cgi-bin/cellosaurus/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix faldo: <http://biohackathon.org/resource/faldo#> .
+@prefix hco: <http://identifiers.org/hco/> .
+@prefix m2r: <http://med2rdf/org/ontology/med2rdf#> .
+@prefix ontology: <https://portals.broadinstitute.org/ccle/ontology#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sio: <http://semanticscience.org/resource/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix uo: <http://purl.obolibrary.org/obo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+cclec:DMS53 a m2r:CellLine,
+        uo:BTO_0005668 ;
+    rdfs:label "DMS53_LUNG" ;
+    m2r:gene [ a m2r:Gene ;
+            rdfs:label "JAG1" ;
+            sio:SIO_000216 [ a uo:STATO_0000206 ;
+                    sio:SIO_000300 5.81128 ] ;
+            rdfs:seeAlso "ENSG00000101384" ],
+        [ a m2r:Gene ;
+            rdfs:label "TP53" ;
+            m2r:variation [ a m2r:Variation ;
+                    faldo:location [ a faldo:Region ;
+                            faldo:begin [ a faldo:ExactPosition ;
+                                    faldo:position "7577559" ;
+                                    faldo:reference <http://identifiers.org/hco/17> ] ;
+                            faldo:end [ a faldo:ExactPosition ;
+                                    faldo:position "7577559" ;
+                                    faldo:reference <http://identifiers.org/hco/17> ] ] ;
+                    m2r:alternative_allele "A" ;
+                    m2r:reference_allele "G" ;
+                    ontology:annotation_transcript "ENST00000269305.4" ;
+                    ontology:hcobuild hco:GRCh37 ],
+                [ a m2r:Variation ;
+                    faldo:location [ a faldo:Region ;
+                            faldo:begin [ a faldo:ExactPosition ;
+                                    faldo:position "7579521" ;
+                                    faldo:reference <http://identifiers.org/hco/17> ] ;
+                            faldo:end [ a faldo:ExactPosition ;
+                                    faldo:position "7579521" ;
+                                    faldo:reference <http://identifiers.org/hco/17> ] ] ;
+                    m2r:alternative_allele "A" ;
+                    m2r:reference_allele "C" ;
+                    ontology:annotation_transcript "ENST00000269305.4" ;
+                    ontology:hcobuild hco:GRCh37 ] ;
+            sio:SIO_000216 [ a uo:STATO_0000206 ;
+                    sio:SIO_000300 24.13016 ] ;
+            rdfs:seeAlso "ENSG00000141510" ],
+        [ a m2r:Gene ;
+            rdfs:label "JAG1" ;
+            sio:SIO_000216 [ a uo:STATO_0000206 ;
+                    sio:SIO_000300 2.59017 ] ;
+            rdfs:seeAlso "ENSG00000270408" ],
+        [ a m2r:Gene ;
+            rdfs:label "FLG" ;
+            m2r:variation [ a m2r:Variation ;
+                    faldo:location [ a faldo:Region ;
+                            faldo:begin [ a faldo:ExactPosition ;
+                                    faldo:position "152280341" ;
+                                    faldo:reference <http://identifiers.org/hco/1> ] ;
+                            faldo:end [ a faldo:ExactPosition ;
+                                    faldo:position "152280341" ;
+                                    faldo:reference <http://identifiers.org/hco/1> ] ] ;
+                    m2r:alternative_allele "G" ;
+                    m2r:reference_allele "A" ;
+                    ontology:annotation_transcript "ENST00000368799.1" ;
+                    ontology:hcobuild hco:GRCh37 ] ;
+            sio:SIO_000216 [ a uo:STATO_0000206 ;
+                    sio:SIO_000300 0.82484 ] ;
+            rdfs:seeAlso "ENSG00000143631" ] ;
+    ccle:gender "M" ;
+    ccle:site_primary "lung" .
+
+uo:STATO_0000206 rdfs:label "RPKM" .
