@@ -6,8 +6,8 @@ services:
     build: ./env
     volumes:
       - .:/work
-#      - /mnt/fast/lincpj20_lm/mase/converter/data:/work/data        HHD等のマウント用
-#      - /mnt/fast/lincpj20_lm/mase/converter/output:/work/output        HHD等のマウント用  
+#      - /mnt/fast/lincpj20_lm/mase/converter/data:/work/data/raw        for mount
+#      - /mnt/fast/lincpj20_lm/mase/converter/output:/work/output    for mount
     tty: true
     privileged: true
     environment:
@@ -22,7 +22,7 @@ services:
       LANG: C.UTF-8
     volumes:
       - .:/home/jovyan/work
-#      - /mnt/fast/lincpj20_lm/mase/converter/data:/home/jovyan/work/data   HHD等のマウント用
+#      - /mnt/fast/lincpj20_lm/mase/converter/data:/home/jovyan/work/data   for mount
     ports:
       - "8891:8891"
     restart: unless-stopped
