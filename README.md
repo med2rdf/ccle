@@ -10,7 +10,7 @@ Download data from the following web site .
 - CCLE_sample_info_file_2012-10-18.txt
 ```
 
-* [Cellosaurus](ftp://ftp.expasy.org/databases/cellosaurus/)
+* [Cellosaurus](https://web.expasy.org/cellosaurus/)
 ```
 - cellosaurus.txt
 ```
