@@ -10,8 +10,10 @@ Download data from the following web site .
 - CCLE_sample_info_file_2012-10-18.txt
 ```
 
-* [Cellosaurus](ftp://ftp.expasy.org/databases/cellosaurus/cellosaurus.txt)
-
+* [Cellosaurus](ftp://ftp.expasy.org/databases/cellosaurus/)
+```
+- cellosaurus.txt
+```
 
 ## Check docker-compose.yaml
 Edit docker-compose.yaml and build docker container using docker-compose .
