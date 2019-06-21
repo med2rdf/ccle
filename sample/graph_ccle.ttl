@@ -20,25 +20,8 @@ cclec:DMS53 a m2r:CellLine,
         uo:BTO_0005668 ;
     rdfs:label "DMS53_LUNG" ;
     m2r:gene [ a m2r:Gene ;
-            rdfs:label "JAG1" ;
-            sio:SIO_000216 [ a uo:STATO_0000206 ;
-                    sio:SIO_000300 5.81128 ] ;
-            rdfs:seeAlso "ENSG00000101384" ],
-        [ a m2r:Gene ;
             rdfs:label "TP53" ;
             m2r:variation [ a m2r:Variation ;
-                    faldo:location [ a faldo:Region ;
-                            faldo:begin [ a faldo:ExactPosition ;
-                                    faldo:position "7577559" ;
-                                    faldo:reference <http://identifiers.org/hco/17> ] ;
-                            faldo:end [ a faldo:ExactPosition ;
-                                    faldo:position "7577559" ;
-                                    faldo:reference <http://identifiers.org/hco/17> ] ] ;
-                    m2r:alternative_allele "A" ;
-                    m2r:reference_allele "G" ;
-                    ontology:annotation_transcript "ENST00000269305.4" ;
-                    ontology:hcobuild hco:GRCh37 ],
-                [ a m2r:Variation ;
                     faldo:location [ a faldo:Region ;
                             faldo:begin [ a faldo:ExactPosition ;
                                     faldo:position "7579521" ;
@@ -49,15 +32,31 @@ cclec:DMS53 a m2r:CellLine,
                     m2r:alternative_allele "A" ;
                     m2r:reference_allele "C" ;
                     ontology:annotation_transcript "ENST00000269305.4" ;
-                    ontology:hcobuild hco:GRCh37 ] ;
+                    ontology:hcobuild hco:GRCh37 ;
+                    ontology:variant_classification "Nonsense_Mutation" ;
+                    ontology:variant_type "SNP" ],
+                [ a m2r:Variation ;
+                    faldo:location [ a faldo:Region ;
+                            faldo:begin [ a faldo:ExactPosition ;
+                                    faldo:position "7577559" ;
+                                    faldo:reference <http://identifiers.org/hco/17> ] ;
+                            faldo:end [ a faldo:ExactPosition ;
+                                    faldo:position "7577559" ;
+                                    faldo:reference <http://identifiers.org/hco/17> ] ] ;
+                    m2r:alternative_allele "A" ;
+                    m2r:reference_allele "G" ;
+                    ontology:annotation_transcript "ENST00000269305.4" ;
+                    ontology:hcobuild hco:GRCh37 ;
+                    ontology:variant_classification "Missense_Mutation" ;
+                    ontology:variant_type "SNP" ] ;
             sio:SIO_000216 [ a uo:STATO_0000206 ;
                     sio:SIO_000300 24.13016 ] ;
             rdfs:seeAlso "ENSG00000141510" ],
         [ a m2r:Gene ;
             rdfs:label "JAG1" ;
             sio:SIO_000216 [ a uo:STATO_0000206 ;
-                    sio:SIO_000300 2.59017 ] ;
-            rdfs:seeAlso "ENSG00000270408" ],
+                    sio:SIO_000300 5.81128 ] ;
+            rdfs:seeAlso "ENSG00000101384" ],
         [ a m2r:Gene ;
             rdfs:label "FLG" ;
             m2r:variation [ a m2r:Variation ;
@@ -71,10 +70,17 @@ cclec:DMS53 a m2r:CellLine,
                     m2r:alternative_allele "G" ;
                     m2r:reference_allele "A" ;
                     ontology:annotation_transcript "ENST00000368799.1" ;
-                    ontology:hcobuild hco:GRCh37 ] ;
+                    ontology:hcobuild hco:GRCh37 ;
+                    ontology:variant_classification "Missense_Mutation" ;
+                    ontology:variant_type "SNP" ] ;
             sio:SIO_000216 [ a uo:STATO_0000206 ;
                     sio:SIO_000300 0.82484 ] ;
-            rdfs:seeAlso "ENSG00000143631" ] ;
+            rdfs:seeAlso "ENSG00000143631" ],
+        [ a m2r:Gene ;
+            rdfs:label "JAG1" ;
+            sio:SIO_000216 [ a uo:STATO_0000206 ;
+                    sio:SIO_000300 2.59017 ] ;
+            rdfs:seeAlso "ENSG00000270408" ] ;
     ccle:gender "M" ;
     ccle:site_primary "lung" .
 

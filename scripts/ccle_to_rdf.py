@@ -187,6 +187,8 @@ class CcleToRDF(OmicsToRDF):
 		start_pos = snp_df['Start_position'].values
 		chromo = snp_df['Chromosome'].values
 		end_pos = snp_df['End_position'].values
+		var_class= snp_df['Variant_Classification'].values
+		var_type = snp_df['Variant_Type'].values
 
 		for snp_idx in range(snp_df.shape[0]):
 			var_node = str(uuid.uuid4())
@@ -196,6 +198,9 @@ class CcleToRDF(OmicsToRDF):
 			self.g.add((BNode(var_node), self.__m2r_ns["alternative_allele"], Literal(tumor_alle[snp_idx])))
 			self.g.add((BNode(var_node), self.__ontology_ns["annotation_transcript"], Literal(anno_trans[snp_idx])))
 			self.g.add((BNode(var_node), self.__ontology_ns["hcobuild"], self.__hco_ns["GRCh{}".format(ncbi_build[snp_idx])]))
+			self.g.add((BNode(var_node), self.__ontology_ns["variant_classification"], Literal(var_class[snp_idx])))
+			self.g.add((BNode(var_node), self.__ontology_ns["variant_type"], Literal(var_type[snp_idx])))
+
 			self.g.add((BNode(var_node), self.__faldo_ns["location"], BNode(var_node + '_p')))
 			self.g.add((BNode(var_node + '_p'), RDF["type"], self.__faldo_ns["Region"]))
 			self.g.add((BNode(var_node + '_p'), self.__faldo_ns["begin"], BNode(var_node + '_p' + '_b')))
