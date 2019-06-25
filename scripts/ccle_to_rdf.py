@@ -13,6 +13,7 @@ import uuid
 
 from scripts.omics_to_rdf import *
 
+EXT = ".ttl"
 
 class CcleToRDF(OmicsToRDF):
 	def __init__(self, snp_row, exp_column, sample_row):
@@ -25,13 +26,14 @@ class CcleToRDF(OmicsToRDF):
 		self.__snp = snp_row
 		self.__is_normalize = False
 
-		self.__ccle_ns = Namespace("https://portals.broadinstitute.org/ccle/")
-		self.__cellline_ns = Namespace("https://portals.broadinstitute.org/links/cell_line/")
-		self.__gene_ns = Namespace("https://portals.broadinstitute.org/links/gene/")
-		self.__variants_ns = Namespace("https://portals.broadinstitute.org/links/variants/")
-		self.__m2r_ns = Namespace("http://med2rdf/org/ontology/med2rdf#")
+		self.__ccle_ns = Namespace("http://med2rdf.org/ontology/ccle#")
+		self.__assay_ns = Namespace("http://med2rdf.org/ccle/assay/")
+		self.__cellline_ns = Namespace("https://portals.broadinstitute.org/ccle/page?cell_line=")
+		self.__gene_ns = Namespace("https://portals.broadinstitute.org/ccle/page?gene=")
+		self.__ensembl_ns = Namespace("https://www.ensembl.org/id/")
+		self.__variants_ns = Namespace("http://med2rdf.org/ccle/variant/")
+		self.__m2r_ns = Namespace("http://med2rdf.org/ontology/med2rdf#")
 		self.__cellosaurus_ns = Namespace("https://web.expasy.org/cgi-bin/cellosaurus/")
-		self.__ontology_ns = Namespace("https://portals.broadinstitute.org/ccle/ontology#")
 		self.__hco_ns = Namespace("http://identifiers.org/hco/")
 		self.__faldo_ns = Namespace("http://biohackathon.org/resource/faldo#")
 		self.__sio_ns = Namespace("http://semanticscience.org/resource/")
@@ -109,10 +111,9 @@ class CcleToRDF(OmicsToRDF):
 		self.g.bind("hco", self.__hco_ns)
 		self.g.bind("m2r", self.__m2r_ns)
 		self.g.bind("faldo", self.__faldo_ns)
-		self.g.bind("ontology", self.__ontology_ns)
 		self.g.bind("dct", DCTERMS)
 		self.g.bind("sio", self.__sio_ns)
-		self.g.bind("uo", self.__uo_ns)
+		self.g.bind("obo", self.__uo_ns)
 		self.g.bind("skos", self.__skos_ns)
 
 	def save_turtle(self, name):
@@ -155,31 +156,42 @@ class CcleToRDF(OmicsToRDF):
 	def create_cell_line_turtle(self, cell_name, cell_id, gender, site_primary):
 		bot_id = self.get_bto_id(cell_id)
 		if not bot_id == 'NO ID':
-			self.g.add((self.__cellline_ns[cell_id], RDF["type"], self.__uo_ns[bot_id]))
+			self.g.add((self.__cellline_ns[cell_name], RDF["type"], self.__uo_ns[bot_id]))
 
-		self.g.add((self.__cellline_ns[cell_id], RDF["type"], self.__m2r_ns["CellLine"]))
-		self.g.add((self.__cellline_ns[cell_id], RDFS["label"], Literal(cell_name)))
-		self.g.add((self.__cellline_ns[cell_id], self.__ccle_ns["gender"], Literal(gender)))
-		self.g.add((self.__cellline_ns[cell_id], self.__ccle_ns["site_primary"], Literal(site_primary)))
+		self.g.add((self.__cellline_ns[cell_name], RDF["type"], self.__m2r_ns["CellLine"]))
+		self.g.add((self.__cellline_ns[cell_name], RDFS["label"], Literal(cell_name)))
+		self.g.add((self.__cellline_ns[cell_name], self.__ccle_ns["gender"], Literal(gender)))
+		self.g.add((self.__cellline_ns[cell_name], self.__ccle_ns["site_primary"], Literal(site_primary)))
+
+		self.create_snp_turtle(cell_name)
 
 	def create_gene_turtle(self, gene_idx, cell_id, cell_name):
 		ensembl = self.exp.loc[:, 'Name'].values[gene_idx]
 		hgnc = self.exp.loc[:, 'Description'].values[gene_idx]
+
+
+		self.g.add((self.__gene_ns[ensembl], RDF["type"], self.__m2r_ns["Gene"]))
+		self.g.add((self.__gene_ns[ensembl], RDFS["label"], Literal(hgnc)))
+		self.g.add((self.__gene_ns[ensembl], RDFS["seeAlso"], self.__ensembl_ns[ensembl]))
+
+		self.create_assay_turtle(gene_idx, cell_id, cell_name, ensembl)
+
+	def create_assay_turtle(self, gene_idx, cell_id, cell_name, ensembl):
+		assay = ensembl + "@" + cell_name
 		exp_val = self.exp.loc[:, cell_name].values[gene_idx]
 
-		gene_node = str(uuid.uuid4())
-		self.g.add((self.__cellline_ns[cell_id], self.__m2r_ns["gene"], BNode(gene_node)))
-		self.g.add((BNode(gene_node), RDF["type"], self.__m2r_ns["Gene"]))
-		self.g.add((BNode(gene_node), RDFS["label"], Literal(hgnc)))
-		self.g.add((BNode(gene_node), RDFS["seeAlso"], Literal(ensembl)))
-		self.g.add((BNode(gene_node), self.__sio_ns["SIO_000216"], BNode(gene_node + '_rpkm')))
-		self.g.add((BNode(gene_node + '_rpkm'), self.__sio_ns['SIO_000300'], Literal(str(exp_val), datatype=XSD.decimal)))
-		self.g.add((BNode(gene_node + '_rpkm'), RDF["type"], self.__uo_ns["STATO_0000206"]))
-		self.g.add((self.__uo_ns["STATO_0000206"], RDFS['label'], Literal('RPKM')))
-		self.create_snp_turtle(gene_node, hgnc)
+		self.g.add((self.__assay_ns[assay], self.__ccle_ns["celline"], self.__cellline_ns[cell_name]))
+		self.g.add((self.__assay_ns[assay], self.__ccle_ns["gene"], self.__gene_ns[ensembl]))
 
-	def create_snp_turtle(self, gene_node, hgnc):
-		snp_df = self.snp[self.snp['Hugo_Symbol'] == hgnc]
+		val_node = str(uuid.uuid4())
+
+		self.g.add((self.__assay_ns[assay], self.__sio_ns["SIO_000216"], BNode(val_node)))
+		self.g.add((BNode(val_node), self.__sio_ns['SIO_000300'], Literal(str(exp_val), datatype=XSD.decimal)))
+		self.g.add((BNode(val_node), RDF["type"], self.__uo_ns["STATO_0000206"]))
+		self.g.add((self.__uo_ns["STATO_0000206"], RDFS['label'], Literal('RPKM')))
+
+	def create_snp_turtle(self, cell_name):
+		snp_df = self.snp[self.snp['Tumor_Sample_Barcode'] == cell_name]
 		ref_alle = snp_df['Reference_Allele'].values
 		tumor_alle = snp_df['Tumor_Seq_Allele1'].values
 		anno_trans = snp_df['Annotation_Transcript'].values
@@ -192,14 +204,16 @@ class CcleToRDF(OmicsToRDF):
 
 		for snp_idx in range(snp_df.shape[0]):
 			var_node = str(uuid.uuid4())
-			self.g.add((BNode(gene_node), self.__m2r_ns["variation"], BNode(var_node)))
+
+			self.g.add((self.__cellline_ns[cell_name], self.__ccle_ns["has_variant"], BNode(var_node)))
+			self.g.add((BNode(var_node), self.__m2r_ns["gene"], self.__m2r_ns["Variation"]))
 			self.g.add((BNode(var_node), RDF["type"], self.__m2r_ns["Variation"]))
 			self.g.add((BNode(var_node), self.__m2r_ns["reference_allele"], Literal(ref_alle[snp_idx])))
 			self.g.add((BNode(var_node), self.__m2r_ns["alternative_allele"], Literal(tumor_alle[snp_idx])))
-			self.g.add((BNode(var_node), self.__ontology_ns["annotation_transcript"], Literal(anno_trans[snp_idx])))
-			self.g.add((BNode(var_node), self.__ontology_ns["hcobuild"], self.__hco_ns["GRCh{}".format(ncbi_build[snp_idx])]))
-			self.g.add((BNode(var_node), self.__ontology_ns["variant_classification"], Literal(var_class[snp_idx])))
-			self.g.add((BNode(var_node), self.__ontology_ns["variant_type"], Literal(var_type[snp_idx])))
+			self.g.add((BNode(var_node), self.__ccle_ns["annotation_transcript"], Literal(anno_trans[snp_idx])))
+			self.g.add((BNode(var_node), self.__ccle_ns["hcobuild"], self.__hco_ns["GRCh{}".format(ncbi_build[snp_idx])]))
+			self.g.add((BNode(var_node), self.__ccle_ns["variant_classification"], Literal(var_class[snp_idx])))
+			self.g.add((BNode(var_node), self.__ccle_ns["variant_type"], Literal(var_type[snp_idx])))
 
 			self.g.add((BNode(var_node), self.__faldo_ns["location"], BNode(var_node + '_p')))
 			self.g.add((BNode(var_node + '_p'), RDF["type"], self.__faldo_ns["Region"]))

@@ -1,3 +1,3 @@
 parameter	value
-in_cellosaurus_ccle_file	../data/cellosaurus/ccle_cellosaurus.pkl
+in_cellosaurus_ccle_file	../data/ccle/ccle_cellosaurus.pkl
 n_jobs	10
