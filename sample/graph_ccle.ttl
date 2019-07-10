@@ -44,7 +44,6 @@ cclec:DMS53_LUNG a m2r:CellLine,
             ccle:variant_classification "Silent" ;
             ccle:variant_type "SNP" ;
             m2r:alternative_allele "G" ;
-            m2r:gene m2r:Variation ;
             m2r:reference_allele "T" ] ;
     ccle:site_primary "lung" .
 
