@@ -1,0 +1,59 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ccle: <http://med2rdf.org/ontology/ccle#> .
+@prefix cclec: <https://portals.broadinstitute.org/ccle/page?cell_line=> .
+@prefix ccleg: <https://portals.broadinstitute.org/ccle/page?gene=> .
+@prefix cclev: <http://med2rdf.org/ccle/variant/> .
+@prefix cellosaurus: <https://web.expasy.org/cgi-bin/cellosaurus/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix faldo: <http://biohackathon.org/resource/faldo#> .
+@prefix hco: <http://identifiers.org/hco/> .
+@prefix m2r: <http://med2rdf.org/ontology/med2rdf#> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sio: <http://semanticscience.org/resource/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ens: <http://rdf.ebi.ac.uk/resource/ensembl/> .
+@prefix transcript: <http://rdf.ebi.ac.uk/resource/ensembl.transcript/> .
+
+[]
+    ccle:celline cclec:DMS53_LUNG ;
+    ccle:gene ens:ENSG00000000003 ;
+    sio:SIO_000216 [
+        sio:SIO_000300 11.7305 ;
+        a obo:STATO_0000206
+    ] .
+
+cclec:DMS53_LUNG
+    sio:SIO_000223 [
+      obo:PATO_0000384 ;#PATO_0000384 for male PATO_0000383 for female
+    ] ;
+    m2r:transcript [
+        m2r:variation [
+            faldo:location [
+                faldo:begin [
+                    faldo:position 136918537 ;
+                    faldo:reference <http://identifiers.org/hco/9#GRCh37> ;
+                    a faldo:ExactPosition
+                ] ;
+                faldo:end [
+                    faldo:position 136918537 ;
+                    faldo:reference <http://identifiers.org/hco/9#GRCh37> ;
+                    a faldo:ExactPosition
+                ] ;
+                a faldo:Region
+            ] ;
+            m2r:transcript transcript:ENST00000303407 ;
+	    m2r:variant_consequence obo:SO_0001819 # for synonyumous/silent ;
+            m2r:variant_type obo:SO_0000694 # SNP ;
+            m2r:alternative_allele "G" ;
+            m2r:reference_allele "T" ;
+            a m2r:Variation
+        ]
+        a med2rdf:Transcript
+    ] ;
+    m2r:site_primary obo:UBERON_0002048 ;
+    a m2r:CellLine, obo:BTO_0005668 ;
+    rdfs:label "DMS53_LUNG" .
+

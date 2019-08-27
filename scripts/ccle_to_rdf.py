@@ -192,6 +192,7 @@ class CcleToRDF(OmicsToRDF):
 			self.g.add((self.__cellline_ns[cell_name], self.__obo_ns["SIO_000223"], self.__obo_ns["PATO_0000383"]))
 		self.g.add((self.__cellline_ns[cell_name], self.__m2r_ns["site_primary"], Literal(site_primary)))
 
+
 		self.create_snp_turtle(cell_name)
 
 	def create_gene_turtle(self, gene_idx, cell_id, cell_name):
@@ -208,6 +209,7 @@ class CcleToRDF(OmicsToRDF):
 
 	def create_assay_turtle(self, gene_idx, cell_id, cell_name, ensembl, bn_assay):
 		bn_result = BNode("result-" + ensembl + "@" + cell_name)
+
 		exp_val = self.exp.loc[:, cell_name].values[gene_idx]
 		self.g.add((self.__cellline_ns[cell_name], self.__m2r_ns["has_assay"], bn_result))
 		self.g.add((bn_result, RDF["type"], self.__m2r_ns["Assay"]))
