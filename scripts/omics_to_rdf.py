@@ -19,7 +19,7 @@ class DbName(Enum):
 	CCLE = 4
 	GDSC = 5
 
-EXT = '.txt'
+EXT = '.ttl'
 CCLE_PREFIX = 'result_ccle_'
 GDSC_PREFIX = 'result_gdsc_'
 
