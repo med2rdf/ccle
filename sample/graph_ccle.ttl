@@ -24,6 +24,7 @@ ccleg:ENSG00000000003 a m2r:Gene ;
 
 cclec:DMS53_LUNG a m2r:CellLine ;
     rdfs:label "DMS53_LUNG" ;
+    rdfs:seeAlso obo:BTO_0005668 ;
     obo:SIO_000223 obo:PATO_0000383 ;  # male
 
     m2r:has_assay [ a m2r:Assay ;

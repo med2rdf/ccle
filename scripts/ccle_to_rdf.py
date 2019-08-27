@@ -164,12 +164,14 @@ class CcleToRDF(OmicsToRDF):
 		cell_name = self.sample.loc[:, 'CCLE name'].values[0]
 		id_name = self.get_cell_line_id(cell_name)
 		gender = self.sample[self.sample["CCLE name"] == cell_name]["Gender"].values[0]
-		primary = self.sample[self.sample["CCLE name"] == cell_name]["Site Primary"].values[0]
+		site_primary = self.sample[self.sample["CCLE name"] == cell_name]["Site Primary"].values[0]
+		hist_primary = self.sample[self.sample["CCLE name"] == cell_name]["Histology"].values[0]
+		hist_secondary = self.sample[self.sample["CCLE name"] == cell_name]["Hist Subtype1"].values[0]
 
 		if id_name == 'NO_ID':
 			return self.g
 
-		self.create_cell_line_turtle(cell_name, id_name, gender, primary)
+		self.create_cell_line_turtle(cell_name, id_name, gender, site_primary, hist_primary, hist_secondary)
 
 		for idx in range(self.exp.shape[0]):
 			self.create_gene_turtle(idx, id_name, cell_name)
@@ -179,10 +181,10 @@ class CcleToRDF(OmicsToRDF):
 
 		return self.g
 
-	def create_cell_line_turtle(self, cell_name, cell_id, gender, site_primary):
+	def create_cell_line_turtle(self, cell_name, cell_id, gender, site_primary, hist_primary, hist_secondary):
 		bot_id = self.get_bto_id(cell_id)
 		if not bot_id == 'NO ID':
-			self.g.add((self.__cellline_ns[cell_name], RDF["type"], self.__obo_ns[bot_id]))
+			self.g.add((self.__cellline_ns[cell_name], RDFS["seeAlso"], self.__obo_ns[bot_id]))
 
 		self.g.add((self.__cellline_ns[cell_name], RDF["type"], self.__m2r_ns["CellLine"]))
 		self.g.add((self.__cellline_ns[cell_name], RDFS["label"], Literal(cell_name)))
@@ -191,7 +193,8 @@ class CcleToRDF(OmicsToRDF):
 		if gender == "F":
 			self.g.add((self.__cellline_ns[cell_name], self.__obo_ns["SIO_000223"], self.__obo_ns["PATO_0000383"]))
 		self.g.add((self.__cellline_ns[cell_name], self.__m2r_ns["site_primary"], Literal(site_primary)))
-
+		self.g.add((self.__cellline_ns[cell_name], self.__m2r_ns["hist_primary"], Literal(hist_primary)))
+		self.g.add((self.__cellline_ns[cell_name], self.__m2r_ns["hist_secondary"], Literal(hist_secondary)))
 
 		self.create_snp_turtle(cell_name)
 
