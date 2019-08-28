@@ -33,7 +33,7 @@ class CcleToRDF(OmicsToRDF):
 		self.__ensembl_ns = Namespace("http://rdf.ebi.ac.uk/resource/ensembl/")
 		self.__trans_ns = Namespace("http://rdf.ebi.ac.uk/resource/ensembl.transcript/")
 		self.__variants_ns = Namespace("http://med2rdf.org/ccle/variant/")
-		self.__m2r_ns = Namespace("http://med2rdf.org/ontology/med2rdf#")
+		self.__m2r_ns = Namespace("http://med2rdf.org/ontology#")
 		self.__cellosaurus_ns = Namespace("https://web.expasy.org/cgi-bin/cellosaurus/")
 		self.__hco_ns = Namespace("http://identifiers.org/hco/")
 		self.__faldo_ns = Namespace("http://biohackathon.org/resource/faldo#")
