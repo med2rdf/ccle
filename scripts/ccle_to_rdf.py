@@ -246,7 +246,7 @@ class CcleToRDF(OmicsToRDF):
 			var_node = str(uuid.uuid4())
 			transcript = anno_trans[snp_idx]
 			transcript_id = transcript.split('.')[0]
-			trans_node = cell_name + ":" + transcript
+			trans_node = transcript
 			gene = gene_name[snp_idx]
 			vc = var_class[snp_idx]
 			mol_node = None
@@ -264,21 +264,17 @@ class CcleToRDF(OmicsToRDF):
 				mol_node = self.__sio_ns["SO_0001578"]
 			elif vc == "Start_Codon_SNP":
 				mol_node = self.__sio_ns["SO_0002012"]
+			var_label = str(protein_change[snp_idx]).replace("p.","")
 
-			self.g.add((self.__cellline_ns[cell_name], self.__m2r_ns["transcript"], BNode(trans_node)))
-			self.g.add((BNode(trans_node), RDF["type"], self.__m2r_ns["Transcript"]))
-			self.g.add((BNode(trans_node), RDFS["label"], Literal(transcript)))
-			self.g.add((BNode(trans_node), self.__m2r_ns["variation"], BNode(var_node)))
-			self.g.add((BNode(trans_node), self.__ccle_ns["hugo_symbol"], Literal(gene)))
-			self.g.add((BNode(trans_node), self.__ccle_ns["entrez_id"], Literal(entrez_id[snp_idx], datatype=XSD.integer)))
-			self.g.add((BNode(trans_node), RDFS["seeAlso"], self.__trans_ns[transcript_id]))
+			self.g.add((self.__cellline_ns[cell_name], self.__m2r_ns["variation"], BNode(var_node)))
 			self.g.add((BNode(var_node), RDF["type"], self.__m2r_ns["Variation"]))
+			self.g.add((BNode(var_node), RDFS["label"], Literal(var_label)))
 			self.g.add((BNode(var_node), self.__ccle_ns["dna_change"], Literal(dna_change[snp_idx])))
 			self.g.add((BNode(var_node), self.__ccle_ns["codon_change"], Literal(codon_change[snp_idx])))
 			self.g.add((BNode(var_node), self.__ccle_ns["protein_change"], Literal(protein_change[snp_idx])))
 			self.g.add((BNode(var_node), self.__m2r_ns["reference_allele"], Literal(ref_alle[snp_idx])))
 			self.g.add((BNode(var_node), self.__m2r_ns["alternative_allele"], Literal(tumor_alle[snp_idx])))
-			self.g.add((BNode(var_node), self.__m2r_ns["transcript"], self.__trans_ns[transcript_id]))
+			self.g.add((BNode(var_node), self.__m2r_ns["gene"], self.__gene_ns[gene]))
 			if mol_node is not None:
 				self.g.add((BNode(var_node), self.__m2r_ns["variant_consequence"], mol_node))
 			self.g.add((BNode(var_node), self.__m2r_ns["variant_type"], Literal(var_type[snp_idx])))
@@ -292,6 +288,14 @@ class CcleToRDF(OmicsToRDF):
 			self.g.add((BNode(var_node + '_p' + "_e"), RDF["type"], self.__faldo_ns["ExactPosition"]))
 			self.g.add((BNode(var_node + '_p' + "_e"), self.__faldo_ns["position"], Literal(end_pos[snp_idx], datatype=XSD.integer)))
 			self.g.add((BNode(var_node + '_p' + "_e"), self.__faldo_ns["reference"], self.__hco_ns["{}#GRCh{}".format(chromo[snp_idx],ncbi_build[snp_idx])]))
+			self.g.add((BNode(var_node), self.__m2r_ns["transcript"], BNode(trans_node)))
+			self.g.add((BNode(trans_node), RDF["type"], self.__m2r_ns["Transcript"]))
+			self.g.add((BNode(trans_node), RDFS["label"], Literal(transcript)))
+			self.g.add((BNode(trans_node), RDFS["seeAlso"], self.__trans_ns[transcript_id]))
+			self.g.add((BNode(trans_node), self.__m2r_ns["gene"], self.__gene_ns[gene]))
+			self.g.add((self.__gene_ns[gene], RDF["type"], self.__m2r_ns["Gene"]))
+			self.g.add((self.__gene_ns[gene], RDFS["label"], Literal(gene)))
+			self.g.add((self.__gene_ns[gene], self.__ccle_ns["entrez_id"], Literal(entrez_id[snp_idx], datatype=XSD.integer)))
 
 
 	def get_cell_line_id(self, name):
