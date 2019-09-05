@@ -6,57 +6,56 @@
 @prefix dct: <http://purl.org/dc/terms/> .
 @prefix faldo: <http://biohackathon.org/resource/faldo#> .
 @prefix hco: <http://identifiers.org/hco/> .
-@prefix transcript: <http://rdf.ebi.ac.uk/resource/ensembl.transcript/> .
-@prefix m2r: <http://med2rdf.org/ontology/med2rdf#> .
+@prefix m2r: <http://med2rdf.org/ontology#> .
 @prefix obo: <http://purl.obolibrary.org/obo/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sio: <http://semanticscience.org/resource/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix transcript: <http://rdf.ebi.ac.uk/resource/ensembl.transcript/> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix ens: <http://rdf.ebi.ac.uk/resource/ensembl/> .
 
+ccleg:ENSG00000000003 a m2r:Gene ;
+    rdfs:label "TSPAN6" ;
+    rdfs:seeAlso <http://rdf.ebi.ac.uk/resource/ensembl/ENSG00000000003> .
+
+ccleg:SCG3 a m2r:Gene ;
+    rdfs:label "SCG3" ;
+    ccle:entrez_id 29106 .
 
 cclec:DMS53_LUNG a m2r:CellLine ;
     rdfs:label "DMS53_LUNG" ;
+    m2r:has_assay [ a m2r:Assay ;
+            m2r:gene ccleg:ENSG00000000003 ;
+            m2r:sample cclec:DMS53_LUNG ;
+            sio:SIO_000216 [ a obo:STATO_0000206 ;
+                    sio:SIO_000300 11.7305 ] ] ;
+
     m2r:hist_primary "carcinoma" ;
     m2r:hist_secondary "small_cell_carcinoma" ;
     m2r:site_primary "lung" ;
-    rdfs:seeAlso obo:BTO_0005668 ;
-    obo:SIO_000223 obo:PATO_0000383 ;  # male
-
-    m2r:has_assay [ a m2r:Assay ;
-        m2r:gene ens:ENSG00000000003 ;
-        m2r:sample cclec:DMS53_LUNG ;
-        sio:SIO_000216 [ a obo:STATO_0000206 ; #RPKM
-            sio:SIO_000300 11.7305 ] ;
-
     m2r:variation [ a m2r:Variation ;
-            rdfs:label "D63E" ;
+            rdfs:label "E44K" ;
             faldo:location [ a faldo:Region ;
                     faldo:begin [ a faldo:ExactPosition ;
-                            faldo:position 27869259 ;
-                            faldo:reference <http://identifiers.org/hco/12#GRCh37> ] ;
+                            faldo:position 51974761 ;
+                            faldo:reference <http://identifiers.org/hco/15#GRCh37> ] ;
                     faldo:end [ a faldo:ExactPosition ;
-                            faldo:position 27869259 ;
-                            faldo:reference <http://identifiers.org/hco/12#GRCh37> ] ] ;
-            m2r:alternative_allele "G" ;
-            m2r:gene ccleg:MRPS35 ;
-            m2r:reference_allele "C" ;
+                            faldo:position 51974761 ;
+                            faldo:reference <http://identifiers.org/hco/15#GRCh37> ] ] ;
+            m2r:alternative_allele "A" ;
+            m2r:gene ccleg:SCG3 ;
+            m2r:reference_allele "G" ;
             m2r:transcript [ a m2r:Transcript ;
-                    rdfs:label "ENST00000081029.3" ;
-                    m2r:gene ccleg:MRPS35 ;
-                    rdfs:seeAlso transcript:ENST00000081029 ] ;
+                    rdfs:label "ENST00000220478.3" ;
+                    m2r:gene ccleg:SCG3 ;
+                    rdfs:seeAlso transcript:ENST00000220478 ] ;
             m2r:variant_consequence sio:SO_0001583 ;
             m2r:variant_type "SNP" ;
-            ccle:codon_change "c.(187-189)gaC>gaG" ;
-            ccle:dna_change "c.189C>G" ;
-            ccle:protein_change "p.D63E" ] 
-
-    ] .
-
-ccleg:MRPS35 a m2r:Gene ;
-    rdfs:label "MRPS35" ;
-    ccle:entrez_id 60488 .
+            ccle:codon_change "c.(130-132)Gaa>Aaa" ;
+            ccle:dna_change "c.130G>A" ;
+            ccle:protein_change "p.E44K" ];
+    obo:SIO_000223 obo:PATO_0000384 ;
+    rdfs:seeAlso obo:BTO_0005668 .
 
